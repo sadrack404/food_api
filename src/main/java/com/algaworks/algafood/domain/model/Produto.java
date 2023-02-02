@@ -1,9 +1,6 @@
 package com.algaworks.algafood.domain.model;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -16,12 +13,17 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Entity
 public class Produto {
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String nome;
+    @Column(nullable = false)
     private String descricao;
+    @Column(nullable = false)
     private BigDecimal preco;
+    @Column(nullable = false)
     private Boolean ativo;
     @ManyToOne
     @JoinColumn(nullable = false)

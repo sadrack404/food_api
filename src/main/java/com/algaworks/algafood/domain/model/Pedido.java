@@ -1,14 +1,13 @@
 package com.algaworks.algafood.domain.model;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,6 +17,7 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 public class Pedido {
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,26 +25,31 @@ public class Pedido {
     private BigDecimal subTotal;
     private BigDecimal taxaFrete;
     private BigDecimal valorTotal;
+    @CreationTimestamp
     private LocalDate dataCriacao;
     private LocalDate dataConfirmacao;
     private LocalDate dataCancelamento;
     private LocalDate dataEntrega;
 
+    @Embedded
+    private Endereco enderecoEntrega;
+
+    private StatusPedido status;
     @ManyToOne
-    @JoinColumn(name = "restaurante_id")
+    @JoinColumn(nullable = false)
     private Restaurante restaurante;
     @ManyToOne
-    @JoinColumn(name = "forma_pagamento_id")
+    @JoinColumn(nullable = false)
     private FormaPagamento formaPagamento;
 
     @ManyToOne
-    @JoinColumn(name = "cliente_id")
+    @JoinColumn(name = "usuario_cliente_id", nullable = false)
     private Usuario cliente;
 
-    private Endereco enderecoEntrega;
 
-    private List<ItemPedido> itens;
-
+    @OneToMany(mappedBy = "pedido")
+    @ToString.Exclude
+    private List<ItemPedido> itens = new ArrayList<>();
 
 
     @Override

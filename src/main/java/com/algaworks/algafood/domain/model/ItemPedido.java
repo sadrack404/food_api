@@ -11,20 +11,22 @@ import java.math.BigDecimal;
 @ToString
 @RequiredArgsConstructor
 public class ItemPedido {
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer quantidade;
-
     private BigDecimal precoUnitario;
-
     private BigDecimal precoTotal;
-
+    private Integer quantidade;
     private String observacao;
 
     @ManyToOne
     @JoinColumn(name = "produto_id")
     private Produto produto;
+
+    @ManyToOne
+    @JoinColumn(name = "pedido_id")
+    private Pedido pedido;
 
 }

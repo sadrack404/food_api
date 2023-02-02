@@ -1,6 +1,7 @@
 package com.algaworks.algafood.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -21,6 +22,7 @@ import java.util.Objects;
 @Entity
 public class Restaurante {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -51,7 +53,7 @@ public class Restaurante {
     @Column(nullable = false, columnDefinition = "datatime")
     private LocalDate dataCadastro;
 
-   // @JsonIgnore
+    @JsonIgnore
     @UpdateTimestamp//Vai Atualizar uma data no momento em que for criada
     @Column(nullable = false, columnDefinition = "datatime")
     private LocalDate dataAtualizacao;
@@ -71,4 +73,5 @@ public class Restaurante {
     public int hashCode() {
         return getClass().hashCode();
     }
+
 }
