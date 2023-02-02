@@ -1,18 +1,12 @@
 package com.algaworks.algafood.domain.exception;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-//@ResponseStatus(value = HttpStatus.NOT_FOUND)//, reason = "Entidade não encontrada") <- mostra uma msg no erro
-public class EntidadeNaoEncontradaException extends ResponseStatusException {
-//Construtor flexivel onde podemos passar um status e uma mensagem
-//é um modo menos pior de se usar o responseStatusException
-    public EntidadeNaoEncontradaException(HttpStatus status, String mensagem) {
-        super(status, mensagem);
-    }
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
+public class EntidadeNaoEncontradaException extends RuntimeException {
 
-    //Construtor padrão, onde o THIS vai invocar uma resposta HTTP do construtor a cima
     public EntidadeNaoEncontradaException(String mensagem) {
-        this(HttpStatus.NOT_FOUND, mensagem);
+        super(mensagem);
     }
 }

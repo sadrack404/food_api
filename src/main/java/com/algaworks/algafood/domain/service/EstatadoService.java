@@ -12,14 +12,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class EstatadoService {
+    public static final String MSG_ESTADO_NAO_ENCONTRADO = "O Estado de código %d, não foi encontrado";
+    public static final String MSG_ESTADO_EM_USO = "O Estado de código %d, está sendo usado";
     @Autowired
     EstadoRepository estadoRepository;
 
     public Estado validaRestaurante(Long id) {
-        return estadoRepository.findById(id).orElseThrow(
-                () -> new EntidadeNaoEncontradaException(
-                        String.format("Estado com o id %d não encontrado", id)
-                ));
+        return estadoRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(MSG_ESTADO_NAO_ENCONTRADO, id)));
     }
 
     public Estado salvar(@RequestBody Estado cozinha) {
@@ -31,13 +30,9 @@ public class EstatadoService {
         try {
             estadoRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(
-                    String.format("O Estado de código %d, não foi encontrado", id)
-            );
+            throw new EntidadeNaoEncontradaException(String.format(MSG_ESTADO_NAO_ENCONTRADO, id));
         } catch (DataIntegrityViolationException e) {
-            throw new EntidadeEmUsoException(
-                    String.format("O Estado de código %d, está sendo usado", id)
-            );
+            throw new EntidadeEmUsoException(String.format(MSG_ESTADO_EM_USO, id));
         }
     }
 

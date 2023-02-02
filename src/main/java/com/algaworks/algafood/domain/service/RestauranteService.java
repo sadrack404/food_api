@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RestauranteService {
+    public static final String MSG_RESTAURANTE_NAO_ENCONTRADO = "Restaurante de id %d não enconttrado";
+    public static final String MSG_RESTAURANTE_EM_USO = "Restaurante de código %d, não pode ser removida pois está em uso";
     @Autowired
     RestauranteRepository restauranteRepository;
     @Autowired
@@ -19,10 +21,7 @@ public class RestauranteService {
 
 
     public Restaurante validaRestaurante(Long id) {
-        return restauranteRepository.findById(id).orElseThrow(
-                () -> new EntidadeNaoEncontradaException(
-                        String.format("Restaurante de id %d não enconttrado", id)
-                ));
+        return restauranteRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, id)));
     }
 
     public Restaurante salvar(Restaurante restaurante) {
@@ -30,9 +29,7 @@ public class RestauranteService {
         var cozinha = cozinhaRepository.findById(cozinhaId);
 
         if (cozinha == null) {
-            throw new EntidadeNaoEncontradaException(
-                    String.format("Não existe cadastro de cozinha com o código %d", cozinhaId)
-            );
+            throw new EntidadeNaoEncontradaException(String.format("Não existe cadastro de cozinha com o código %d", cozinhaId));
         }
 
         restaurante.setCozinha(cozinha.get());
@@ -44,13 +41,9 @@ public class RestauranteService {
         try {
             restauranteRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(
-                    String.format("Restaurante de código %d, não encontrado", id)
-            );
+            throw new EntidadeNaoEncontradaException(String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, id));
         } catch (DataIntegrityViolationException e) {
-            throw new EntidadeEmUsoException(
-                    String.format("Restaurante de código %d, não pode ser removida pois está em uso", id)
-            );
+            throw new EntidadeEmUsoException(String.format(MSG_RESTAURANTE_EM_USO, id));
         }
     }
 }

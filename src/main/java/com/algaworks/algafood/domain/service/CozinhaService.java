@@ -15,7 +15,11 @@ import java.util.Optional;
 
 @Service
 public class CozinhaService {
-    //classe de serviço só retonar NEGOCIO
+    public static final String MSG_COZINHA_NAO_ENCOTRADA =
+            "Cozinha de código %d, não encontrada";
+    public static final String MSG_COZNHA_EM_USO =
+            "Cozinha de código %d, não pode ser removida pois está em uso";
+
     @Autowired
     CozinhaRepository cozinhaRepository;
 
@@ -23,12 +27,8 @@ public class CozinhaService {
         return cozinhaRepository.findAll();
     }
 
-    public Optional<Cozinha> encontrarPorId(Long id) {
-        return cozinhaRepository.findById(id);
-    }
-
     public Cozinha validaCozinha(Long id) {
-        return cozinhaRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(String.format("Restaurante de id %d não enconttrado", id)));
+        return cozinhaRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCOTRADA ,id)));
     }
 
     public Cozinha salvar(@RequestBody Cozinha cozinha) {
@@ -40,9 +40,9 @@ public class CozinhaService {
         try {
             cozinhaRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(String.format("Cozinha de código %d, não encontrada", id));
+            throw new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCOTRADA, id));
         } catch (DataIntegrityViolationException e) {
-            throw new EntidadeEmUsoException(String.format("Cozinha de código %d, não pode ser removida pois está em uso", id));
+            throw new EntidadeEmUsoException(String.format(MSG_COZNHA_EM_USO, id));
         }
     }
 }

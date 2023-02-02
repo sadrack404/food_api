@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/cidades")
@@ -28,8 +27,8 @@ public class CidadeController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Cidade> listarCidadePorId(@PathVariable Long id) {
-        return cidadeRepository.findById(id);
+    public Cidade listarCidadePorId(@PathVariable Long id) {
+        return cidadeService.verificaCidadeId(id);
     }
 
     @PostMapping
@@ -43,24 +42,15 @@ public class CidadeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cidade> alterarCidade(
-            @PathVariable Long id, @RequestBody Cidade cidade) {
+    public Cidade alterarCidade(@PathVariable Long id, @RequestBody Cidade cidade) {
         var cidadeNova = cidadeService.verificaCidadeId(id);
-        if (cidadeNova != null) {
-            BeanUtils.copyProperties(cidade, cidadeNova, "id");
-            cidadeService.adicionarUmaCidade(cidadeNova);
-            return ResponseEntity.ok(cidadeNova);
-        }
-        return ResponseEntity.notFound().build();
+        BeanUtils.copyProperties(cidade, cidadeNova, "id");
+        return cidadeService.adicionarUmaCidade(cidadeNova);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Cidade> deletarCidade(@PathVariable Long id) {
-        try {
-            cidadeService.excluirCidade(id);
-            return ResponseEntity.noContent().build();
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletarCidade(@PathVariable Long id) {
+        cidadeService.excluirCidade(id);
     }
 }

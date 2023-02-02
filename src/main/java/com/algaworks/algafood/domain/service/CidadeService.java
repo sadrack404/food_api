@@ -16,6 +16,8 @@ import java.util.Optional;
 @Service
 public class CidadeService {
 
+    public static final String MSG_CIDADE_NAO_CADASTRADO = "Cidade com %d não existente";
+    public static final String MSG_CIDADE_EM_USO = "Cidade com id %d está em uso";
     @Autowired
     CidadeRepository cidadeRepository;
 
@@ -23,17 +25,14 @@ public class CidadeService {
     EstadoRepository estadoRepository;
 
     public Cidade verificaCidadeId(Long id) {
-        return cidadeRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(
-                String.format("Cidade com id %d está em uso", id))
-        );
+        return cidadeRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(MSG_CIDADE_NAO_CADASTRADO, id)));
     }
 
     public Cidade adicionarUmaCidade(Cidade cidade) {
         Long estadoId = cidade.getEstado().getId();
         Optional<Estado> estado = estadoRepository.findById(estadoId);
         if (estado == null) {
-            throw new EntidadeNaoEncontradaException(
-                    String.format("Não existe cadastro de estado com código %d", estadoId));
+            throw new EntidadeNaoEncontradaException(String.format("Cidade com %d não encontrado", estadoId));
         }
         cidade.setEstado(estado.get());
         cidadeRepository.save(cidade);
@@ -44,13 +43,9 @@ public class CidadeService {
         try {
             cidadeRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(
-                    String.format("Cidade com id %d está em uso", id)
-            );
+            throw new EntidadeNaoEncontradaException(String.format(MSG_CIDADE_NAO_CADASTRADO, id));
         } catch (DataIntegrityViolationException e) {
-            throw new EntidadeEmUsoException(
-                    String.format("Cidade com id %d está em uso", id)
-            );
+            throw new EntidadeEmUsoException(String.format(MSG_CIDADE_EM_USO, id));
         }
     }
 }
