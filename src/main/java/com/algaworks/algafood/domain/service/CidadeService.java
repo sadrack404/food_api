@@ -5,13 +5,10 @@ import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
-import com.algaworks.algafood.domain.repository.EstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class CidadeService {
@@ -20,9 +17,9 @@ public class CidadeService {
     public static final String MSG_CIDADE_EM_USO = "Cidade com id %d está em uso";
     @Autowired
     CidadeRepository cidadeRepository;
-
     @Autowired
-    EstadoRepository estadoRepository;
+    EstatadoService estatadoService;
+
 
     public Cidade verificaCidadeId(Long id) {
         return cidadeRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(MSG_CIDADE_NAO_CADASTRADO, id)));
@@ -30,13 +27,9 @@ public class CidadeService {
 
     public Cidade adicionarUmaCidade(Cidade cidade) {
         Long estadoId = cidade.getEstado().getId();
-        Optional<Estado> estado = estadoRepository.findById(estadoId);
-        if (estado == null) {
-            throw new EntidadeNaoEncontradaException(String.format("Cidade com %d não encontrado", estadoId));
-        }
-        cidade.setEstado(estado.get());
-        cidadeRepository.save(cidade);
-        return cidade;
+        Estado estado = estatadoService.validaEstado(estadoId);
+        cidade.setEstado(estado);
+        return cidadeRepository.save(cidade);
     }
 
     public void excluirCidade(Long id) {

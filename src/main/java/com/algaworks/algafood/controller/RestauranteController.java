@@ -1,6 +1,7 @@
 package com.algaworks.algafood.controller;
 
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.RestauranteService;
@@ -32,14 +33,17 @@ public class RestauranteController {
 
     @GetMapping("/{id}")
     public Restaurante buscar(@PathVariable Long id) {
-        return restauranteService.validaRestaurante(id);
+        try {
+            return restauranteService.validaRestaurante(id);
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @PostMapping
     public ResponseEntity<?> adicionarRestaurante(@RequestBody Restaurante restaurante) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(this.restauranteService.salvar(restaurante));
+            return ResponseEntity.status(HttpStatus.CREATED).body(this.restauranteService.salvar(restaurante));
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -49,7 +53,11 @@ public class RestauranteController {
     public Restaurante alterarRestaurante(@PathVariable Long id, @RequestBody Restaurante restaurante) {
         var restauranteNovo = this.restauranteService.validaRestaurante(id);
         BeanUtils.copyProperties(restaurante, restauranteNovo, "id", "formasDePagamento", "endereco", "dataCadastro", "dataAtualizacao");
-        return restauranteService.salvar(restauranteNovo);
+        try {
+            return restauranteService.salvar(restauranteNovo);
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")

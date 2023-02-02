@@ -2,6 +2,7 @@ package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
@@ -17,7 +18,7 @@ public class RestauranteService {
     @Autowired
     RestauranteRepository restauranteRepository;
     @Autowired
-    CozinhaRepository cozinhaRepository;
+    CozinhaService cozinhaService;
 
 
     public Restaurante validaRestaurante(Long id) {
@@ -26,13 +27,8 @@ public class RestauranteService {
 
     public Restaurante salvar(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
-        var cozinha = cozinhaRepository.findById(cozinhaId);
-
-        if (cozinha == null) {
-            throw new EntidadeNaoEncontradaException(String.format("Não existe cadastro de cozinha com o código %d", cozinhaId));
-        }
-
-        restaurante.setCozinha(cozinha.get());
+        Cozinha cozinha = cozinhaService.validaCozinha(cozinhaId);
+        restaurante.setCozinha(cozinha);
         restauranteRepository.save(restaurante);
         return restaurante;
     }

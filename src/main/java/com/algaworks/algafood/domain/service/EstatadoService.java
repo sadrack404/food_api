@@ -17,7 +17,7 @@ public class EstatadoService {
     @Autowired
     EstadoRepository estadoRepository;
 
-    public Estado validaRestaurante(Long id) {
+    public Estado validaEstado(Long id) {
         return estadoRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(MSG_ESTADO_NAO_ENCONTRADO, id)));
     }
 

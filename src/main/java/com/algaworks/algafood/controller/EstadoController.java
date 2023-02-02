@@ -27,7 +27,7 @@ public class EstadoController {
 
     @GetMapping("/{id}")
     public Estado listaUmEstado(@PathVariable Long id) {
-        return estadoService.validaRestaurante(id);
+        return estadoService.validaEstado(id);
     }
 
     @PostMapping
@@ -37,7 +37,7 @@ public class EstadoController {
 
     @PutMapping("/{id}")
     public Estado alterarEstado(@PathVariable Long id, @RequestBody Estado estado) {
-        var estadoNovo = estadoService.validaRestaurante(id);
+        var estadoNovo = estadoService.validaEstado(id);
         BeanUtils.copyProperties(estado, estadoNovo, "id");
         return estadoRepository.save(estadoNovo);
     }
