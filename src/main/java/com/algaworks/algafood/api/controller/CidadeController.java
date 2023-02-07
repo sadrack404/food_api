@@ -28,6 +28,9 @@ public class CidadeController {
 
     @GetMapping("/{id}")
     public Cidade listarCidadePorId(@PathVariable Long id) {
+        if (true){
+            throw new IllegalArgumentException("Teste");
+        }
         return cidadeService.verificaCidadeId(id);
     }
 
