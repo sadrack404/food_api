@@ -8,10 +8,13 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -54,7 +57,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return Problem.builder()
                 .status(status.value())
                 .type(problemType.getUri())
-                .title(ProblemType.ENTIDADE_NAO_ENCONTRADA.getTitulo())
+                .title(problemType.getTitulo())
                 .detail(detail);
     }
 
@@ -87,6 +90,25 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             return handleMethodArgumentTypeMismatch((MethodArgumentTypeMismatchException) ex, headers, status, request);
         }
         return super.handleTypeMismatch(ex, headers, status, request);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        ProblemType problemType = ProblemType.DADOS_INVALIDOS;
+        String detail = "Um ou mais campos estão inválidos, faça o preenchimento corretoe tente novamente";
+        BindingResult bindingResult = ex.getBindingResult();
+
+        List<Problem.Field> problemFields = bindingResult.getFieldErrors()
+                .stream()
+                .map(FieldError -> Problem.Field.builder()
+                        .name(FieldError.getField())
+                        .userMessage(FieldError.getDefaultMessage())
+                        .build())
+                .collect(Collectors.toList());
+
+        Problem problem = createProblemBuilder(status, problemType, detail).timeStamp(LocalDate.now()).fields(problemFields).build();
+
+        return super.handleExceptionInternal(ex, problem, headers, status, request);
     }
 
     private ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {

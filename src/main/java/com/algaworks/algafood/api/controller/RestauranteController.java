@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -42,7 +44,7 @@ public class RestauranteController {
     }
 
     @PostMapping
-    public ResponseEntity<?> adicionarRestaurante(@RequestBody Restaurante restaurante) {
+    public ResponseEntity<?> adicionarRestaurante(@RequestBody @Valid Restaurante restaurante) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(this.restauranteService.salvar(restaurante));
         } catch (RestauranteNaoEncontradoException e) {
