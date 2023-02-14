@@ -1,9 +1,11 @@
 package com.algaworks.algafood.domain.model;
 
+import com.algaworks.algafood.core.validation.Groups;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Getter
@@ -12,6 +14,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Entity
 public class Estado {
+    @NotNull(groups = Groups.EstadoId.class)
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

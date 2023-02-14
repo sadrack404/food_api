@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import javax.validation.Valid;
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class RestauranteController {
     }
 
     @PutMapping("/{id}")
-    public Restaurante alterarRestaurante(@PathVariable Long id, @RequestBody Restaurante restaurante) {
+    public Restaurante alterarRestaurante(@PathVariable Long id, @Valid @RequestBody Restaurante restaurante) {
         var restauranteNovo = this.restauranteService.validaRestaurante(id);
         BeanUtils.copyProperties(restaurante, restauranteNovo, "id", "formasDePagamento", "endereco", "dataCadastro", "dataAtualizacao");
         try {

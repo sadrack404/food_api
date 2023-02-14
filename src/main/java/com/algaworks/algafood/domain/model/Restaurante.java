@@ -1,5 +1,9 @@
 package com.algaworks.algafood.domain.model;
 
+import com.algaworks.algafood.core.validation.Groups;
+import com.algaworks.algafood.core.validation.Multiplo;
+import com.algaworks.algafood.core.validation.TaxaFrete;
+import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -13,14 +17,17 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@ValorZeroIncluiDescricao(valorField = "taxaFrete",
+        descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Getter
 @Setter
 @RequiredArgsConstructor
@@ -34,16 +41,19 @@ public class Restaurante {
 
     //@NotNull - NAO ACEITA NULLO
     //@NotEmpty - NAO ACEITA VAZIO
-    // A ANOTACAO A BAIXO NAO ACEITA AS DUAS A CIMA
+    // A ANOTACAO A BAIXO, ACEITA AS DUAS A CIMA
     @NotBlank
     @Column(nullable = false)
     private String nome;
 
-    @DecimalMin("1")
+    @TaxaFrete
+    @Multiplo(numero = 2)
+    //@DecimalMin(value = "1")
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
     @Valid // valida em formato de cascata
+    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
     @NotNull
     @ManyToOne
     @JoinColumn(name = "cozinha_id", nullable = false)

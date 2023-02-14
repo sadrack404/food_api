@@ -41,4 +41,5 @@ public class Produto {
     public int hashCode() {
         return getClass().hashCode();
     }
+
 }

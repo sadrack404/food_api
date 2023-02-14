@@ -1,12 +1,14 @@
 package com.algaworks.algafood.domain.model;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import com.algaworks.algafood.core.validation.Groups;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 import java.util.Objects;
 
 @Getter
@@ -16,12 +18,18 @@ import java.util.Objects;
 @Entity
 public class Cidade {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String nome;
-    @ManyToOne()
+
+    @Valid
+    @ConvertGroup(from = Default.class, to = Groups.EstadoId.class)
+    @NotNull
+    @ManyToOne
     @JoinColumn(nullable = false)
     private Estado estado;
 
