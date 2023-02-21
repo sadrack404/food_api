@@ -4,7 +4,6 @@ import com.algaworks.algafood.core.validation.Groups;
 import com.algaworks.algafood.core.validation.Multiplo;
 import com.algaworks.algafood.core.validation.TaxaFrete;
 import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.ConvertGroup;
@@ -59,27 +57,22 @@ public class Restaurante {
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "restaurante_forma_pagamento",
             joinColumns = @JoinColumn(name = "restaurante_id"),
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
     private List<FormaPagamento> formasDePagamento = new ArrayList<>();
 
-    @JsonIgnore
     @Embedded
     private Endereco endereco;
 
-    @JsonIgnore
     @CreationTimestamp //Vai Instanciar uma data no momento em que for criada
     @Column(nullable = false, columnDefinition = "datatime")
     private LocalDate dataCadastro;
 
-    @JsonIgnore
     @UpdateTimestamp//Vai Atualizar uma data no momento em que for criada
     @Column(nullable = false, columnDefinition = "datatime")
     private LocalDate dataAtualizacao;
-    @JsonIgnore
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produto = new ArrayList<>();
 
