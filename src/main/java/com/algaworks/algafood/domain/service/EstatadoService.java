@@ -10,6 +10,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.transaction.Transactional;
+
 @Service
 public class EstatadoService {
     public static final String MSG_ESTADO_NAO_ENCONTRADO = "O Estado de código %d, não foi encontrado";
@@ -21,11 +23,13 @@ public class EstatadoService {
         return estadoRepository.findById(id).orElseThrow(() -> new EstadoNaoEncontradoException(String.format(MSG_ESTADO_NAO_ENCONTRADO, id)));
     }
 
+    @Transactional
     public Estado salvar(@RequestBody Estado cozinha) {
         estadoRepository.save(cozinha);
         return cozinha;
     }
 
+    @Transactional
     public void excluir(Long id) {
         try {
             estadoRepository.deleteById(id);

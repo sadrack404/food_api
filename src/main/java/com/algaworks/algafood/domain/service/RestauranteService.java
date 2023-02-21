@@ -10,22 +10,22 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class RestauranteService {
-    public static final String MSG_RESTAURANTE_NAO_ENCONTRADO
-            = "Restaurante de id %d não enconttrado";
-    public static final String MSG_RESTAURANTE_EM_USO
-            = "Restaurante de código %d, não pode ser removida pois está em uso";
+    public static final String MSG_RESTAURANTE_NAO_ENCONTRADO = "Restaurante de id %d não enconttrado";
+    public static final String MSG_RESTAURANTE_EM_USO = "Restaurante de código %d, não pode ser removida pois está em uso";
     @Autowired
     RestauranteRepository restauranteRepository;
     @Autowired
     CozinhaService cozinhaService;
 
-
     public Restaurante validaRestaurante(Long id) {
         return restauranteRepository.findById(id).orElseThrow(() -> new RestauranteNaoEncontradoException(String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, id)));
     }
 
+    @Transactional
     public Restaurante salvar(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
         Cozinha cozinha = cozinhaService.validaCozinha(cozinhaId);
@@ -34,6 +34,7 @@ public class RestauranteService {
         return restaurante;
     }
 
+    @Transactional
     public void excluir(Long id) {
         try {
             restauranteRepository.deleteById(id);
