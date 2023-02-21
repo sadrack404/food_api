@@ -14,9 +14,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface Multiplo {
 
     String message() default "Multiplo Inválido";
-
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
 
     int numero();

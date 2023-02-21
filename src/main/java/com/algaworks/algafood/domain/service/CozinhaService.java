@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class CozinhaService {
         return cozinhaRepository.findById(id).orElseThrow(() -> new CozinhaNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCOTRADA, id)));
     }
 
-    public Cozinha salvar(@RequestBody Cozinha cozinha) {
+    public Cozinha salvar(Cozinha cozinha) {
         cozinhaRepository.save(cozinha);
         return cozinha;
     }
