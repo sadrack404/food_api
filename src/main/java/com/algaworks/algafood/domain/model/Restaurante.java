@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -68,11 +68,11 @@ public class Restaurante {
 
     @CreationTimestamp //Vai Instanciar uma data no momento em que for criada
     @Column(nullable = false, columnDefinition = "datatime")
-    private LocalDate dataCadastro;
+    private OffsetDateTime dataCadastro;
 
     @UpdateTimestamp//Vai Atualizar uma data no momento em que for criada
     @Column(nullable = false, columnDefinition = "datatime")
-    private LocalDate dataAtualizacao;
+    private OffsetDateTime dataAtualizacao;
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produto = new ArrayList<>();
 
