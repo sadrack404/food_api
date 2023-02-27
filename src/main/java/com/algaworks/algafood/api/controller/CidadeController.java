@@ -44,8 +44,8 @@ public class CidadeController {
     @PutMapping("/{id}")
     public Cidade alterarCidade(@PathVariable Long id, @Valid @RequestBody Cidade cidade) {
         var cidadeNova = cidadeService.verificaCidadeId(id);
+        BeanUtils.copyProperties(cidade, cidadeNova, "id");
         try {
-            BeanUtils.copyProperties(cidade, cidadeNova, "id");
             return cidadeService.adicionarUmaCidade(cidadeNova);
         } catch (EstadoNaoEncontradoException e) {
             throw new NegocioException(e.getMessage(), e);
