@@ -6,7 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,10 +26,10 @@ public class Pedido {
     private BigDecimal taxaFrete;
     private BigDecimal valorTotal;
     @CreationTimestamp
-    private LocalDate dataCriacao;
-    private LocalDate dataConfirmacao;
-    private LocalDate dataCancelamento;
-    private LocalDate dataEntrega;
+    private OffsetDateTime dataCriacao;
+    private OffsetDateTime dataConfirmacao;
+    private OffsetDateTime dataCancelamento;
+    private OffsetDateTime dataEntrega;
 
     @Embedded
     private Endereco enderecoEntrega;

@@ -40,7 +40,7 @@ public class Restaurante {
     //@NotNull - NAO ACEITA NULLO
     //@NotEmpty - NAO ACEITA VAZIO
     // A ANOTACAO A BAIXO, ACEITA AS DUAS A CIMA
-    @NotBlank
+    //@NotBlank
     @Column(nullable = false)
     private String nome;
 
@@ -50,9 +50,9 @@ public class Restaurante {
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
-    @Valid // valida em formato de cascata
-    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
-    @NotNull
+   // @Valid // valida em formato de cascata
+   // @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
+   //@NotNull
     @ManyToOne
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;

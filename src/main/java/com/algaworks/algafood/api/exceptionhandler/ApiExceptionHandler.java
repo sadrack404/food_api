@@ -25,7 +25,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -86,7 +86,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Problem problem = createProblemBuilder(status, problemType, detail)
                 .userMessage(detail)
-                .timeStamp(LocalDate.now())
+                .timeStamp(OffsetDateTime.now())
                 .build();
         return super.handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
@@ -123,7 +123,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .collect(Collectors.toList());
 
         Problem problem = createProblemBuilder(status, problemType, detail)
-                .timeStamp(LocalDate.now())
+                .timeStamp(OffsetDateTime.now())
                 .objects(Collections.singletonList(problemObjects))
                 .build();
 
@@ -146,7 +146,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         String detail = String.format("O recurso '%s', que você tentou acessar é inexistente", ex.getRequestURL());
         Problem problem = createProblemBuilder(status, problemType, detail)
                 .userMessage(detail)
-                .timeStamp(LocalDate.now())
+                .timeStamp(OffsetDateTime.now())
                 .build();
         return super.handleExceptionInternal(ex, problem, headers, status, request);
     }
@@ -155,7 +155,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         String path = joinPath(ex.getPath());
         ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
         String detail = String.format("A propriedade '%s' recebeu o  valor '%s', que é um tipo inválido. Corrija e informe um valor compátivel com o tipo %s.", path, ex.getValue(), ex.getTargetType().getSimpleName());
-        Problem problem = createProblemBuilder(status, problemType, detail).userMessage(detail).timeStamp(LocalDate.now()).build();
+        Problem problem = createProblemBuilder(status, problemType, detail).userMessage(detail).timeStamp(OffsetDateTime.now()).build();
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
@@ -164,7 +164,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
 
         String detail = String.format("O campo %s, não é um campo válido para a essa entidade", path);
-        Problem problem = createProblemBuilder(status, problemType, detail).userMessage(USER_MESSAGE).timeStamp(LocalDate.now()).build();
+        Problem problem = createProblemBuilder(status, problemType, detail).userMessage(USER_MESSAGE).timeStamp(OffsetDateTime.now()).build();
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
@@ -174,7 +174,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         String detail = USER_MESSAGE;
         ProblemType problemType = ProblemType.ERRO_DE_SISTEMA;
 
-        Problem problem = createProblemBuilder(status, problemType, detail).timeStamp(LocalDate.now()).build();
+        Problem problem = createProblemBuilder(status, problemType, detail).timeStamp(OffsetDateTime.now()).build();
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
@@ -184,7 +184,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         String detail = ex.getMessage();
         ProblemType problemType = ProblemType.ENTIDADE_NAO_ENCONTRADA;
 
-        Problem problem = createProblemBuilder(status, problemType, detail).userMessage("Entidade não encontrada").timeStamp(LocalDate.now()).build();
+        Problem problem = createProblemBuilder(status, problemType, detail).userMessage("Entidade não encontrada").timeStamp(OffsetDateTime.now()).build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, webRequest);
     }
@@ -195,7 +195,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.ERRO_DE_NEGOCIO;
         String detail = ex.getMessage();
 
-        Problem problem = createProblemBuilder(status, problemType, detail).userMessage(USER_MESSAGE).timeStamp(LocalDate.now()).build();
+        Problem problem = createProblemBuilder(status, problemType, detail).userMessage(USER_MESSAGE).timeStamp(OffsetDateTime.now()).build();
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, webRequest);
     }
 
@@ -205,7 +205,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.ENTIDADE_EM_USO;
         String detail = ex.getMessage();
 
-        Problem problem = createProblemBuilder(status, problemType, detail).userMessage(detail).timeStamp(LocalDate.now()).build();
+        Problem problem = createProblemBuilder(status, problemType, detail).userMessage(detail).timeStamp(OffsetDateTime.now()).build();
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, webRequest);
     }
 }
