@@ -1,5 +1,9 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.assembler.CozinhaDtoAssembler;
+import com.algaworks.algafood.api.disassembler.CozinhaDtoDisassembler;
+import com.algaworks.algafood.api.model.CozinhaDto;
+import com.algaworks.algafood.api.model.input.CozinhaInput;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CozinhaService;
@@ -20,27 +24,35 @@ public class CozinhaController {
     @Autowired
     CozinhaService cozinhaService;
 
+    @Autowired
+    CozinhaDtoAssembler cozinhaDtoAssembler;
+
+    @Autowired
+    CozinhaDtoDisassembler cozinhaDtoDisassembler;
+
+
     @GetMapping
-    public List<Cozinha> listar() {
-        return cozinhaService.listarTodasCozinhas();
+    public List<CozinhaDto> listar() {
+        return cozinhaDtoAssembler.toCollectionDto(cozinhaService.listarTodasCozinhas());
     }
 
     @GetMapping("/{id}")
-    public Cozinha buscar(@PathVariable Long id) {
-        return cozinhaService.validaCozinha(id);
+    public CozinhaDto buscar(@PathVariable Long id) {
+        return cozinhaDtoAssembler.toModel(cozinhaService.validaCozinha(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cozinha adiciona(@RequestBody @Valid Cozinha cozinha) {
-        return cozinhaService.salvar(cozinha);
+    public CozinhaDto adiciona(@RequestBody @Valid CozinhaInput cozinha) {
+        var cozinhaSalva = cozinhaDtoDisassembler.toDtoObject(cozinha);
+        return cozinhaDtoAssembler.toModel(cozinhaService.salvar(cozinhaSalva));
     }
 
     @PutMapping("/{id}")
-    public Cozinha alterar(@PathVariable Long id, @RequestBody Cozinha cozinha) {
+    public CozinhaDto alterar(@PathVariable Long id, @RequestBody CozinhaInput cozinha) {
         var cozinhaNova = cozinhaService.validaCozinha(id);
-        BeanUtils.copyProperties(cozinha, cozinhaNova, "id");
-        return cozinhaService.salvar(cozinhaNova);
+        cozinhaDtoDisassembler.copyToDomainObject(cozinha, cozinhaNova);
+        return cozinhaDtoAssembler.toModel(cozinhaService.salvar(cozinhaNova));
     }
 
     @DeleteMapping("/{id}")

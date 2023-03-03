@@ -1,6 +1,5 @@
 package com.algaworks.algafood.api.assembler;
 
-import com.algaworks.algafood.api.model.CozinhaDto;
 import com.algaworks.algafood.api.model.RestauranteDto;
 import com.algaworks.algafood.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
@@ -20,8 +19,6 @@ public class RestauranteDtoAssembler {
     }
 
     /*
-
-
     public RestauranteDto toModel(Restaurante restaurante) {
         CozinhaDto cozinhaDto = new CozinhaDto();
         cozinhaDto.setId(restaurante.getCozinha().getId());

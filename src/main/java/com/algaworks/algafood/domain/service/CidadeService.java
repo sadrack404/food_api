@@ -24,7 +24,9 @@ public class CidadeService {
 
 
     public Cidade verificaCidadeId(Long id) {
-        return cidadeRepository.findById(id).orElseThrow(() -> new CidadeNaoEncontradaException(String.format(MSG_CIDADE_NAO_CADASTRADO, id)));
+        return cidadeRepository.findById(id)
+                .orElseThrow(() -> new CidadeNaoEncontradaException(
+                        String.format(MSG_CIDADE_NAO_CADASTRADO, id)));
     }
 
     @Transactional
