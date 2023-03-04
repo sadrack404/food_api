@@ -33,6 +33,7 @@ public class EstatadoService {
     public void excluir(Long id) {
         try {
             estadoRepository.deleteById(id);
+            estadoRepository.flush();
         } catch (EmptyResultDataAccessException e) {
             throw new EstadoNaoEncontradoException(String.format(MSG_ESTADO_NAO_ENCONTRADO, id));
         } catch (DataIntegrityViolationException e) {
