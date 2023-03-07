@@ -14,8 +14,10 @@ import javax.transaction.Transactional;
 
 @Service
 public class EstatadoService {
-    public static final String MSG_ESTADO_NAO_ENCONTRADO = "O Estado de código %d, não foi encontrado";
-    public static final String MSG_ESTADO_EM_USO = "O Estado de código %d, está sendo usado";
+    public static final String MSG_ESTADO_NAO_ENCONTRADO
+            = "O Estado de código %d, não foi encontrado";
+    public static final String MSG_ESTADO_EM_USO
+            = "O Estado de código %d, está sendo usado";
     @Autowired
     EstadoRepository estadoRepository;
 

@@ -61,6 +61,8 @@ public class Restaurante {
     @Embedded
     private Endereco endereco;
 
+    private Boolean ativo = Boolean.TRUE;
+
     @CreationTimestamp //Vai Instanciar uma data no momento em que for criada
     @Column(nullable = false, columnDefinition = "datatime")
     private OffsetDateTime dataCadastro;
@@ -70,6 +72,14 @@ public class Restaurante {
     private OffsetDateTime dataAtualizacao;
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produto = new ArrayList<>();
+
+    public void ativar() {
+        this.ativo = Boolean.TRUE;
+    }
+
+    public void inativar() {
+        this.ativo = Boolean.FALSE;
+    }
 
     @Override
     public boolean equals(Object o) {

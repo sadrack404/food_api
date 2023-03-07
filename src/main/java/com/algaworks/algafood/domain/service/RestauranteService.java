@@ -35,6 +35,18 @@ public class RestauranteService {
     }
 
     @Transactional
+    public void ativar(Long id) {
+        Restaurante restaurante = validaRestaurante(id);
+        restaurante.ativar();
+    }
+
+    @Transactional
+    public void inativar(Long id) {
+        Restaurante restaurante = validaRestaurante(id);
+        restaurante.inativar();
+    }
+
+    @Transactional
     public void excluir(Long id) {
         try {
             restauranteRepository.deleteById(id);

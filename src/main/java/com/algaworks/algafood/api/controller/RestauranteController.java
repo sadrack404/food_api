@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.controller;
 import com.algaworks.algafood.api.assembler.RestauranteDtoAssembler;
 import com.algaworks.algafood.api.disassembler.RestauranteDtoDisassembler;
 import com.algaworks.algafood.api.model.RestauranteDto;
+import com.algaworks.algafood.api.model.input.RestauranteIdInput;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
@@ -74,4 +75,17 @@ public class RestauranteController {
     public void excluirRestaurante(@PathVariable Long id) {
         restauranteService.excluir(id);
     }
+
+    @PutMapping("/{id}/ativar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ativar(@PathVariable Long id) {
+        restauranteService.ativar(id);
+    }
+    @DeleteMapping("/{id}/ativar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inativar(@PathVariable Long id) {
+        restauranteService.inativar(id);
+    }
+
+
 }
