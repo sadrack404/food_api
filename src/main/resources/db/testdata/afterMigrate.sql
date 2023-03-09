@@ -67,3 +67,6 @@ insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('San
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 6);
 
 insert into grupo (nome) value  ("Cozinheiro");
+insert into grupo (nome) value  ("Garçom");
+insert into grupo (nome) value  ("Chef");
+insert into grupo (nome) value  ("Gerente");

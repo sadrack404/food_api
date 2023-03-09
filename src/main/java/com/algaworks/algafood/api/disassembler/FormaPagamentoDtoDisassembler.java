@@ -16,7 +16,7 @@ public class FormaPagamentoDtoDisassembler {
         return modelMapper.map(formaPagamento, FormaDePagamentoDto.class);
     }
 
-    public void copyToDtoObject(FormaPagamento formaPagamento, FormaDePagamentoDto formaDePagamento) {
-        modelMapper.map(formaPagamento, formaDePagamento);
+    public void copyToDtoObject(FormaPagamento formaPagamento, FormaDePagamentoDto formaDePagamentoDto) {
+        modelMapper.map(formaPagamento, formaDePagamentoDto);
     }
 }
