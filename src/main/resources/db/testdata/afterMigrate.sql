@@ -70,3 +70,7 @@ insert into grupo (nome) value  ("Cozinheiro");
 insert into grupo (nome) value  ("Garçom");
 insert into grupo (nome) value  ("Chef");
 insert into grupo (nome) value  ("Gerente");
+
+insert into usuario (nome, email, senha, data_cadastro) values ( 'Gabriel Sadrack', 'gabriel@gmail.com', '123', utc_timestamp);
+insert into usuario (nome, email, senha, data_cadastro) values ( 'Jorge Amado', 'amado@gmail.com', '123', utc_timestamp);
+insert into usuario (nome, email, senha, data_cadastro) values ( 'Marilia', 'mari@gmail.com', '123', utc_timestamp);

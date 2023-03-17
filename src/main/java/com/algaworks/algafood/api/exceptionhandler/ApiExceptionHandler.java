@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.exceptionhandler;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.exception.SenhaAtualInvalidaException;
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
@@ -186,6 +187,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Problem problem = createProblemBuilder(status, problemType, detail).userMessage("Entidade não encontrada").timeStamp(OffsetDateTime.now()).build();
 
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, webRequest);
+    }
+
+    @ExceptionHandler(SenhaAtualInvalidaException.class)
+    public ResponseEntity<?> handleSenhaAtualInvalidaException(SenhaAtualInvalidaException ex, WebRequest webRequest) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        String detail = "Senha atual informada não coincide com a senha salva";
+        ProblemType problemType = ProblemType.ERRO_DE_NEGOCIO;
+
+        Problem problem = createProblemBuilder(status, problemType, detail).userMessage(detail).timeStamp(OffsetDateTime.now()).build();
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, webRequest);
     }
 
