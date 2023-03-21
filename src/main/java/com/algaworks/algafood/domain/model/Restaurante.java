@@ -1,6 +1,5 @@
 package com.algaworks.algafood.domain.model;
 
-import com.algaworks.algafood.core.validation.Groups;
 import com.algaworks.algafood.core.validation.Multiplo;
 import com.algaworks.algafood.core.validation.TaxaFrete;
 import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
@@ -13,16 +12,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.groups.ConvertGroup;
-import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @ValorZeroIncluiDescricao(valorField = "taxaFrete",
         descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
@@ -46,8 +38,8 @@ public class Restaurante {
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
-   // @Valid // valida em formato de cascata
-   // @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
+    // @Valid // valida em formato de cascata
+    // @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
     @ManyToOne
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
@@ -56,7 +48,7 @@ public class Restaurante {
     @JoinTable(name = "restaurante_forma_pagamento",
             joinColumns = @JoinColumn(name = "restaurante_id"),
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
-    private List<FormaPagamento> formasDePagamento = new ArrayList<>();
+    private Set<FormaPagamento> formasDePagamento = new HashSet<>();
 
     @Embedded
     private Endereco endereco;
@@ -79,6 +71,14 @@ public class Restaurante {
 
     public void inativar() {
         this.ativo = Boolean.FALSE;
+    }
+
+    public boolean adicionarFormaPagamento(FormaPagamento formaPagamento) {
+        return getFormasDePagamento().add(formaPagamento);
+    }
+
+    public boolean removerFormaPagamento(FormaPagamento formaPagamento) {
+        return getFormasDePagamento().remove(formaPagamento);
     }
 
     @Override
