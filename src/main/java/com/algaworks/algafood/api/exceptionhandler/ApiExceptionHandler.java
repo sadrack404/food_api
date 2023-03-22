@@ -1,9 +1,6 @@
 package com.algaworks.algafood.api.exceptionhandler;
 
-import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
-import com.algaworks.algafood.domain.exception.NegocioException;
-import com.algaworks.algafood.domain.exception.SenhaAtualInvalidaException;
+import com.algaworks.algafood.domain.exception.*;
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
@@ -188,6 +185,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         Problem problem = createProblemBuilder(status, problemType, detail).userMessage("Entidade não encontrada").timeStamp(OffsetDateTime.now()).build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, webRequest);
+    }
+
+    @ExceptionHandler(ProdutoNaoEncontradoException.class)
+    public ResponseEntity<?> handleProdutoNaoEncontradoException(ProdutoNaoEncontradoException ex, WebRequest webRequest){
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        String detail = ex.getMessage();
+        ProblemType problemType = ProblemType.RECURSO_NAO_ENCONTRADO;
+
+        Problem problem = createProblemBuilder(status,problemType,detail).userMessage(detail).timeStamp(OffsetDateTime.now()).build();
+        return handleExceptionInternal(ex, problem,new HttpHeaders() ,status, webRequest);
     }
 
     @ExceptionHandler(SenhaAtualInvalidaException.class)
