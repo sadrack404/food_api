@@ -4,9 +4,9 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -21,11 +21,18 @@ public class Grupo {
     @Column(nullable = false)
     private String nome;
     @ManyToMany
-    @JoinTable(name = "grupo_permissao",
-            joinColumns = @JoinColumn(name = "grupo_id"),
-            inverseJoinColumns = @JoinColumn(name = "permissao_id"))
+    @JoinTable(name = "grupo_permissao", joinColumns = @JoinColumn(name = "grupo_id"), inverseJoinColumns = @JoinColumn(name = "permissao_id"))
     @ToString.Exclude
-    private List<Permissao> permisseos = new ArrayList<>();
+    private Set<Permissao> permissoes = new HashSet<>();
+
+    public void adicionarPermissao(Permissao permissao) {
+        getPermissoes().add(permissao);
+    }
+
+    public void removerPermissao(Permissao permissao) {
+        getPermissoes().remove(permissao);
+    }
+
 
     @Override
     public boolean equals(Object o) {

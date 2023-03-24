@@ -1,23 +1,43 @@
 package com.algaworks.algafood.domain.service;
 
+import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
+import com.algaworks.algafood.domain.exception.GrupoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Grupo;
+import com.algaworks.algafood.domain.model.Permissao;
 import com.algaworks.algafood.domain.repository.GrupoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 public class GrupoService {
 
-    @Autowired
-    GrupoRepository grupoRepository;
+    private static final String MSG_GRUPO_EM_USO = "Grupo de código %d não pode ser removido, pois está em uso";
 
-    public Grupo validaGrupo(Long id) {
-        return grupoRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("Grupo não encontrado")
-        );
+    @Autowired
+    private GrupoRepository grupoRepository;
+
+
+    @Autowired
+    private PermissaoService cadastroPermissao;
+
+    @Transactional
+    public void desassociarPermissao(Long grupoId, Long permissaoId) {
+        Grupo grupo = buscarOuFalhar(grupoId);
+        Permissao permissao = cadastroPermissao.buscarOuFalhar(permissaoId);
+
+        grupo.removerPermissao(permissao);
+    }
+
+    @Transactional
+    public void associarPermissao(Long grupoId, Long permissaoId) {
+        Grupo grupo = buscarOuFalhar(grupoId);
+        Permissao permissao = cadastroPermissao.buscarOuFalhar(permissaoId);
+
+        grupo.adicionarPermissao(permissao);
     }
 
     @Transactional
@@ -25,13 +45,22 @@ public class GrupoService {
         return grupoRepository.save(grupo);
     }
 
-    public List<Grupo> listar() {
-        return grupoRepository.findAll();
+    @Transactional
+    public void excluir(Long grupoId) {
+        try {
+            grupoRepository.deleteById(grupoId);
+            grupoRepository.flush();
+
+        } catch (EmptyResultDataAccessException e) {
+            throw new GrupoNaoEncontradoException("Não encontrado");
+
+        } catch (DataIntegrityViolationException e) {
+            throw new EntidadeEmUsoException(String.format(MSG_GRUPO_EM_USO, grupoId));
+        }
     }
 
-    @Transactional
-    public void remover(Long id) {
-        grupoRepository.deleteById(id);
+    public Grupo buscarOuFalhar(Long grupoId) {
+        return grupoRepository.findById(grupoId).orElseThrow(() -> new GrupoNaoEncontradoException("Não encontrado"));
     }
 
 }

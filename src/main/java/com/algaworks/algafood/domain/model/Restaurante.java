@@ -55,6 +55,8 @@ public class Restaurante {
 
     private Boolean ativo = Boolean.TRUE;
 
+    private Boolean aberto = Boolean.FALSE;
+
     @CreationTimestamp //Vai Instanciar uma data no momento em que for criada
     @Column(nullable = false, columnDefinition = "datatime")
     private OffsetDateTime dataCadastro;
@@ -71,6 +73,14 @@ public class Restaurante {
 
     public void inativar() {
         this.ativo = Boolean.FALSE;
+    }
+
+    public void abrir() {
+        this.aberto = Boolean.TRUE;
+    }
+
+    public void fechar() {
+        this.aberto = Boolean.FALSE;
     }
 
     public boolean adicionarFormaPagamento(FormaPagamento formaPagamento) {

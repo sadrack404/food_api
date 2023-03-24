@@ -57,6 +57,18 @@ public class RestauranteService {
     }
 
     @Transactional
+    public void abrir(Long id) {
+        Restaurante restaurante = validaRestaurante(id);
+        restaurante.abrir();
+    }
+
+    @Transactional
+    public void fechar(Long id) {
+        Restaurante restaurante = validaRestaurante(id);
+        restaurante.fechar();
+    }
+
+    @Transactional
     public void desassociarFormaPagamento(Long restauranteId, Long formaDePagamentoId) {
         Restaurante restaurante = validaRestaurante(restauranteId);
         FormaPagamento formaPagamento = formaDePagamentoService.validaFormaPagamento(formaDePagamentoId);

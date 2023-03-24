@@ -24,4 +24,7 @@ public class RestauranteInput {
     @NotNull
     private EnderecoInputDto endereco;
 
+    @NotBlank
+    private Boolean aberto;
+
 }

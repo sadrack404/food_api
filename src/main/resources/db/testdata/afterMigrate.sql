@@ -74,3 +74,6 @@ insert into grupo (nome) value  ("Gerente");
 insert into usuario (nome, email, senha, data_cadastro) values ( 'Gabriel Sadrack', 'gabriel@gmail.com', '123', utc_timestamp);
 insert into usuario (nome, email, senha, data_cadastro) values ( 'Jorge Amado', 'amado@gmail.com', '123', utc_timestamp);
 insert into usuario (nome, email, senha, data_cadastro) values ( 'Marilia', 'mari@gmail.com', '123', utc_timestamp);
+
+insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
+insert into grupo_permissao (grupo_id, permissao_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
