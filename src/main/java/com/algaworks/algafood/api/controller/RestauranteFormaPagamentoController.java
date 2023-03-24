@@ -15,10 +15,10 @@ import java.util.List;
 public class RestauranteFormaPagamentoController {
 
     @Autowired
-    RestauranteService restauranteService;
+    private RestauranteService restauranteService;
 
     @Autowired
-    FormaPagamentoDTOAssembler formaPagamentoDtoAssembler;
+    private FormaPagamentoDTOAssembler formaPagamentoDtoAssembler;
 
     @GetMapping
     public List<FormaDePagamentoDTO> listar(@PathVariable Long restauranteId) {
