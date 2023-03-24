@@ -66,6 +66,12 @@ public class Restaurante {
     private OffsetDateTime dataAtualizacao;
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produto = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name = "restaurante_usuario_responsavel",
+            joinColumns = @JoinColumn(name = "restaurante_id"),
+            inverseJoinColumns = @JoinColumn(name = "usuario_id")
+    )
+    private Set<Usuario> usuario = new HashSet<>();
 
     public void ativar() {
         this.ativo = Boolean.TRUE;
@@ -89,6 +95,14 @@ public class Restaurante {
 
     public boolean removerFormaPagamento(FormaPagamento formaPagamento) {
         return getFormasDePagamento().remove(formaPagamento);
+    }
+
+    public void dessassociarUsuario(Usuario usuario) {
+        getUsuario().remove(usuario);
+    }
+
+    public void associarUsuario(Usuario usuario) {
+        getUsuario().add(usuario);
     }
 
     @Override

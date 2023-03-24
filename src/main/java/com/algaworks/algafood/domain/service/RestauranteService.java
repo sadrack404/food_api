@@ -16,15 +16,18 @@ public class RestauranteService {
     public static final String MSG_RESTAURANTE_NAO_ENCONTRADO = "Restaurante de id %d não enconttrado";
     public static final String MSG_RESTAURANTE_EM_USO = "Restaurante de código %d, não pode ser removida pois está em uso";
     @Autowired
-    RestauranteRepository restauranteRepository;
+    private RestauranteRepository restauranteRepository;
     @Autowired
-    CozinhaService cozinhaService;
+    private CozinhaService cozinhaService;
 
     @Autowired
-    CidadeService cidadeService;
+    private UsuarioService usuarioService;
 
     @Autowired
-    FormaPagamentoService formaPagamentoService;
+    private CidadeService cidadeService;
+
+    @Autowired
+    private FormaPagamentoService formaPagamentoService;
 
     public Restaurante validaRestaurante(Long id) {
         return restauranteRepository.findById(id).orElseThrow(() -> new RestauranteNaoEncontradoException(String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, id)));
@@ -93,5 +96,19 @@ public class RestauranteService {
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(String.format(MSG_RESTAURANTE_EM_USO, id));
         }
+    }
+
+    @Transactional
+    public void desassociarUsuario(Long restauranteId, Long usuarioId) {
+        Restaurante restaurante = validaRestaurante(restauranteId);
+        Usuario usuario = usuarioService.valida(usuarioId);
+        restaurante.dessassociarUsuario(usuario);
+    }
+
+    @Transactional
+    public void associarUsuario(Long restauranteId, Long usuarioId) {
+        Restaurante restaurante = validaRestaurante(restauranteId);
+        Usuario usuario = usuarioService.valida(usuarioId);
+        restaurante.associarUsuario(usuario);
     }
 }
