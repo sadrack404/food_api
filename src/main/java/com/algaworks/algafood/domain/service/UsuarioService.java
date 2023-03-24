@@ -17,13 +17,13 @@ import java.util.Optional;
 public class UsuarioService {
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
-    GrupoService grupoService;
+    private GrupoService grupoService;
 
     @Autowired
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
 
     public List<Usuario> listar() {
