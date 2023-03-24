@@ -1,8 +1,8 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.api.assembler.EstadoDtoAssembler;
-import com.algaworks.algafood.api.disassembler.EstadoDtoDisassembler;
-import com.algaworks.algafood.api.model.EstadoDto;
+import com.algaworks.algafood.api.assembler.EstadoDTOAssembler;
+import com.algaworks.algafood.api.disassembler.EstadoDTODisassembler;
+import com.algaworks.algafood.api.model.EstadoDTO;
 import com.algaworks.algafood.api.model.input.EstadoInput;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
@@ -18,38 +18,38 @@ import java.util.List;
 public class EstadoController {
 
     @Autowired
-    public EstadoRepository estadoRepository;
+    private EstadoRepository estadoRepository;
 
     @Autowired
-    public EstatadoService estadoService;
+    private EstatadoService estadoService;
 
     @Autowired
-    public EstadoDtoAssembler estadoDtoAssembler;
+    private EstadoDTOAssembler estadoDTOAssembler;
 
     @Autowired
-    public EstadoDtoDisassembler estadoDtoDisassembler;
+    private EstadoDTODisassembler estadoDTODisassembler;
 
     @GetMapping
-    public List<EstadoDto> lista() {
-        return estadoDtoAssembler.toCollectionDto(estadoRepository.findAll());
+    public List<EstadoDTO> lista() {
+        return estadoDTOAssembler.toCollectionDTO(estadoRepository.findAll());
     }
 
     @GetMapping("/{id}")
-    public EstadoDto listaUmEstado(@PathVariable Long id) {
-        return estadoDtoAssembler.toDto(estadoService.validaEstado(id));
+    public EstadoDTO listaUmEstado(@PathVariable Long id) {
+        return estadoDTOAssembler.toModel(estadoService.validaEstado(id));
     }
 
     @PostMapping
-    public EstadoDto adicionaEstado(@RequestBody EstadoInput estadoInput) {
-        Estado estado = estadoDtoDisassembler.toDtoObject(estadoInput);
-        return estadoDtoAssembler.toDto(estadoService.salvar(estado));
+    public EstadoDTO adicionaEstado(@RequestBody EstadoInput estadoInput) {
+        Estado estado = estadoDTODisassembler.toDomainObject(estadoInput);
+        return estadoDTOAssembler.toModel(estadoService.salvar(estado));
     }
 
     @PutMapping("/{id}")
-    public EstadoDto alterarEstado(@PathVariable Long id, @RequestBody EstadoInput estado) {
+    public EstadoDTO alterarEstado(@PathVariable Long id, @RequestBody EstadoInput estado) {
         var estadoNovo = estadoService.validaEstado(id);
-        estadoDtoDisassembler.copyToDtoObject(estado, estadoNovo);
-        return estadoDtoAssembler.toDto(estadoRepository.save(estadoNovo));
+        estadoDTODisassembler.copyToDomainObject(estado, estadoNovo);
+        return estadoDTOAssembler.toModel(estadoRepository.save(estadoNovo));
     }
 
     @DeleteMapping("/{id}")

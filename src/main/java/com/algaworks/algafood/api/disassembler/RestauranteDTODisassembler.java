@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RestauranteDtoDisassembler {
+public class RestauranteDTODisassembler {
     @Autowired
     ModelMapper modelMapper;
 
-    public Restaurante toDtoObject(RestauranteInput restauranteInput){
+    public Restaurante toDomainObject(RestauranteInput restauranteInput){
         return modelMapper.map(restauranteInput, Restaurante.class);
     }
 
@@ -32,7 +32,7 @@ public class RestauranteDtoDisassembler {
        */
 
 
-    public void copyToDtoObject(RestauranteInput restauranteInput, Restaurante restaurante){
+    public void copyToDomainObject(RestauranteInput restauranteInput, Restaurante restaurante){
         /*Evitar Resolved [org.springframework.orm.jpa.JpaSystemException: identifier of an instance of com.algaworks.algafood.domain.model.Cozinha was altered from 1 to 2; nested exception is org.hibernate.HibernateException*/
         restaurante.setCozinha(new Cozinha());
         restaurante.getEndereco().setCidade(new Cidade());

@@ -19,7 +19,7 @@ public class PermissaoDTOAssembler {
         return modelMapper.map(permissao, PermissaoDTO.class);
     }
 
-    public List<PermissaoDTO> toListModel(Collection<Permissao> permissao) {
+    public List<PermissaoDTO> toCollectionDTO(Collection<Permissao> permissao) {
         return permissao.stream().map(this::toModel).toList();
     }
 }

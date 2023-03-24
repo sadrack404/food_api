@@ -23,7 +23,7 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQuerys {
     private EntityManager manager;
 
     @Override
-    public List<Restaurante> finda(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
+    public List<Restaurante> find(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
         //Criteria é usado para consultas JPA complexas
         //Iniciamos usando um builder de criterias
         CriteriaBuilder builder = manager.getCriteriaBuilder();

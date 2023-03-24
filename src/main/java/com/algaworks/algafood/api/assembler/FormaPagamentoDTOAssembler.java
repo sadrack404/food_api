@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.assembler;
 
-import com.algaworks.algafood.api.model.FormaDePagamentoDto;
+import com.algaworks.algafood.api.model.FormaDePagamentoDTO;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,17 +11,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class FormaPagamentoDtoAssembler {
+public class FormaPagamentoDTOAssembler {
     @Autowired
     ModelMapper modelMapper;
 
-    public FormaPagamento toModel (FormaDePagamentoDto dto) {
+    public FormaPagamento toModel (FormaDePagamentoDTO dto) {
         return modelMapper.map(dto, FormaPagamento.class);
     }
 
-    public List<FormaDePagamentoDto> toCollectionDto (Collection<FormaPagamento> entities) {
+    public List<FormaDePagamentoDTO> toCollectionDTO(Collection<FormaPagamento> entities) {
         return entities.stream()
-                .map(entity -> modelMapper.map(entity, FormaDePagamentoDto.class))
+                .map(entity -> modelMapper.map(entity, FormaDePagamentoDTO.class))
                 .collect(Collectors.toList());
     }
 

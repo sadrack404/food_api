@@ -12,11 +12,11 @@ public class ProdutoDTODisassembler {
     @Autowired
     ModelMapper modelMapper;
 
-    public Produto toDTOObject(ProdutoInput produtoInput) {
+    public Produto toDomainObject(ProdutoInput produtoInput) {
         return modelMapper.map(produtoInput, Produto.class);
     }
 
-    public void copyToDTOObject(ProdutoInput produtoInput, Produto produto) {
+    public void copyToDomainObject(ProdutoInput produtoInput, Produto produto) {
         modelMapper.map(produtoInput, produto);
     }
 }

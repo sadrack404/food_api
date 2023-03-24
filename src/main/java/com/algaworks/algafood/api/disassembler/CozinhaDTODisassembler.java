@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CozinhaDtoDisassembler {
+public class CozinhaDTODisassembler {
 
     @Autowired
     ModelMapper modelMapper;
 
-    public Cozinha toDtoObject(CozinhaInput cozinhaInput) {
+    public Cozinha toDomainObject(CozinhaInput cozinhaInput) {
         return modelMapper.map(cozinhaInput, Cozinha.class);
     }
 

@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface RestauranteRepositoryQuerys {
     //conversa com a classe RestauranteRepositoryImpl
-    List<Restaurante> finda(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal);
+    List<Restaurante> find(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal);
 
 }

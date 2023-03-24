@@ -1,13 +1,11 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.api.assembler.CozinhaDtoAssembler;
-import com.algaworks.algafood.api.disassembler.CozinhaDtoDisassembler;
-import com.algaworks.algafood.api.model.CozinhaDto;
+import com.algaworks.algafood.api.assembler.CozinhaDTOAssembler;
+import com.algaworks.algafood.api.disassembler.CozinhaDTODisassembler;
+import com.algaworks.algafood.api.model.CozinhaDTO;
 import com.algaworks.algafood.api.model.input.CozinhaInput;
-import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CozinhaService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,39 +18,39 @@ import java.util.List;
 public class CozinhaController {
 
     @Autowired
-    CozinhaRepository cozinhaRepository;
+    private CozinhaRepository cozinhaRepository;
     @Autowired
-    CozinhaService cozinhaService;
+    private CozinhaService cozinhaService;
 
     @Autowired
-    CozinhaDtoAssembler cozinhaDtoAssembler;
+    private CozinhaDTOAssembler cozinhaDTOAssembler;
 
     @Autowired
-    CozinhaDtoDisassembler cozinhaDtoDisassembler;
+    private CozinhaDTODisassembler cozinhaDTODisassembler;
 
 
     @GetMapping
-    public List<CozinhaDto> listar() {
-        return cozinhaDtoAssembler.toCollectionDto(cozinhaService.listarTodasCozinhas());
+    public List<CozinhaDTO> listar() {
+        return cozinhaDTOAssembler.toCollectionDTO(cozinhaService.listarTodasCozinhas());
     }
 
     @GetMapping("/{id}")
-    public CozinhaDto buscar(@PathVariable Long id) {
-        return cozinhaDtoAssembler.toModel(cozinhaService.validaCozinha(id));
+    public CozinhaDTO buscar(@PathVariable Long id) {
+        return cozinhaDTOAssembler.toModel(cozinhaService.validaCozinha(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CozinhaDto adiciona(@RequestBody @Valid CozinhaInput cozinha) {
-        var cozinhaSalva = cozinhaDtoDisassembler.toDtoObject(cozinha);
-        return cozinhaDtoAssembler.toModel(cozinhaService.salvar(cozinhaSalva));
+    public CozinhaDTO adiciona(@RequestBody @Valid CozinhaInput cozinha) {
+        var cozinhaSalva = cozinhaDTODisassembler.toDomainObject(cozinha);
+        return cozinhaDTOAssembler.toModel(cozinhaService.salvar(cozinhaSalva));
     }
 
     @PutMapping("/{id}")
-    public CozinhaDto alterar(@PathVariable Long id, @RequestBody CozinhaInput cozinha) {
+    public CozinhaDTO alterar(@PathVariable Long id, @RequestBody CozinhaInput cozinha) {
         var cozinhaNova = cozinhaService.validaCozinha(id);
-        cozinhaDtoDisassembler.copyToDomainObject(cozinha, cozinhaNova);
-        return cozinhaDtoAssembler.toModel(cozinhaService.salvar(cozinhaNova));
+        cozinhaDTODisassembler.copyToDomainObject(cozinha, cozinhaNova);
+        return cozinhaDTOAssembler.toModel(cozinhaService.salvar(cozinhaNova));
     }
 
     @DeleteMapping("/{id}")

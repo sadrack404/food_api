@@ -51,7 +51,7 @@ public class TesteJPA {
     @GetMapping("/restaurante/query")
     public List<Restaurante> nomeETaxa
             (String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
-        return restaurante.finda(nome, taxaFreteInicial, taxaFreteFinal);
+        return restaurante.find(nome, taxaFreteInicial, taxaFreteFinal);
     }
 
     @GetMapping("/restaurante/com-frete-gratis")

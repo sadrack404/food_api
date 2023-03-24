@@ -1,13 +1,12 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.api.assembler.UsuarioDtoAssembler;
-import com.algaworks.algafood.api.disassembler.UsuarioDtoDisassembler;
-import com.algaworks.algafood.api.model.UsuarioDto;
+import com.algaworks.algafood.api.assembler.UsuarioDTOAssembler;
+import com.algaworks.algafood.api.disassembler.UsuarioDTODisassembler;
+import com.algaworks.algafood.api.model.UsuarioDTO;
 import com.algaworks.algafood.api.model.input.SenhaUsuarioInput;
 import com.algaworks.algafood.api.model.input.UsuarioInput;
 import com.algaworks.algafood.api.model.input.UsuarioInputSemSenha;
 import com.algaworks.algafood.domain.model.Usuario;
-
 import com.algaworks.algafood.domain.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,35 +20,35 @@ import java.util.List;
 public class UsuarioController {
 
     @Autowired
-    UsuarioService usuarioService;
+    private UsuarioService usuarioService;
     @Autowired
-    UsuarioDtoAssembler usuarioDtoAssembler;
+    private UsuarioDTOAssembler usuarioDTOAssembler;
     @Autowired
-    UsuarioDtoDisassembler usuarioDtoDisassembler;
+    private UsuarioDTODisassembler usuarioDTODisassembler;
 
     @GetMapping("/{id}")
-    public UsuarioDto busca(@PathVariable Long id) {
+    public UsuarioDTO busca(@PathVariable Long id) {
         Usuario usuario = usuarioService.valida(id);
-        return usuarioDtoAssembler.toModel(usuario);
+        return usuarioDTOAssembler.toModel(usuario);
     }
 
     @GetMapping
-    public List<UsuarioDto> listar() {
-        return usuarioDtoAssembler.toCollectionModel(usuarioService.listar());
+    public List<UsuarioDTO> listar() {
+        return usuarioDTOAssembler.toCollectionDTO(usuarioService.listar());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UsuarioDto cadastrar(@RequestBody @Valid UsuarioInput usuarioInput) {
-        Usuario usuario = usuarioDtoDisassembler.toDomainObject(usuarioInput);
-        return usuarioDtoAssembler.toModel(usuarioService.salvar(usuario));
+    public UsuarioDTO cadastrar(@RequestBody @Valid UsuarioInput usuarioInput) {
+        Usuario usuario = usuarioDTODisassembler.toDomainObject(usuarioInput);
+        return usuarioDTOAssembler.toModel(usuarioService.salvar(usuario));
     }
 
     @PutMapping("/{id}")
-    public UsuarioDto atualizar(@PathVariable Long id, @RequestBody @Valid UsuarioInputSemSenha usuarioInputSemSenha) {
+    public UsuarioDTO atualizar(@PathVariable Long id, @RequestBody @Valid UsuarioInputSemSenha usuarioInputSemSenha) {
         Usuario usuario = usuarioService.valida(id);
-        usuarioDtoDisassembler.copyToDomainObject(usuarioInputSemSenha, usuario);
-        return usuarioDtoAssembler.toModel(usuarioService.salvar(usuario));
+        usuarioDTODisassembler.copyToDomainObject(usuarioInputSemSenha, usuario);
+        return usuarioDTOAssembler.toModel(usuarioService.salvar(usuario));
     }
 
     @PutMapping("/{id}/senha")

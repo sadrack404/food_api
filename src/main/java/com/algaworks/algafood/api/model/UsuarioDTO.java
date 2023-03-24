@@ -5,8 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CidadeResumeDto {
+public class UsuarioDTO {
     private Long id;
     private String nome;
-    private String estado;
+    private String email;
+
 }

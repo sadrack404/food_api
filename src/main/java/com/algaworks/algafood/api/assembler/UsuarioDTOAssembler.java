@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.assembler;
 
-import com.algaworks.algafood.api.model.UsuarioDto;
+import com.algaworks.algafood.api.model.UsuarioDTO;
 import com.algaworks.algafood.domain.model.Usuario;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,16 +10,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class UsuarioDtoAssembler {
+public class UsuarioDTOAssembler {
 
     @Autowired
     ModelMapper modelMapper;
 
-    public UsuarioDto toModel(Usuario usuario) {
-        return modelMapper.map(usuario, UsuarioDto.class);
+    public UsuarioDTO toModel(Usuario usuario) {
+        return modelMapper.map(usuario, UsuarioDTO.class);
     }
 
-    public List<UsuarioDto> toCollectionModel(List<Usuario> usuarios) {
+    public List<UsuarioDTO> toCollectionDTO(List<Usuario> usuarios) {
         return usuarios.stream().map(this::toModel).collect(Collectors.toList());
     }
 

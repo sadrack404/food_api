@@ -14,11 +14,11 @@ public class ProdutoDTOAssembler {
     @Autowired
     ModelMapper modelMapper;
 
-    public ProdutoDTO produtoModeloToModel(Produto produto) {
+    public ProdutoDTO toModel(Produto produto) {
         return modelMapper.map(produto, ProdutoDTO.class);
     }
 
-    public List<ProdutoDTO> produtoModeloList(List<Produto> lista) {
-        return lista.stream().map(this::produtoModeloToModel).toList();
+    public List<ProdutoDTO> toCollectionDTO(List<Produto> lista) {
+        return lista.stream().map(this::toModel).toList();
     }
 }

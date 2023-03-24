@@ -3,7 +3,6 @@ package com.algaworks.algafood.domain.service;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.*;
-import com.algaworks.algafood.domain.repository.ProdutoRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -25,7 +24,7 @@ public class RestauranteService {
     CidadeService cidadeService;
 
     @Autowired
-    FormaDePagamentoService formaDePagamentoService;
+    FormaPagamentoService formaPagamentoService;
 
     public Restaurante validaRestaurante(Long id) {
         return restauranteRepository.findById(id).orElseThrow(() -> new RestauranteNaoEncontradoException(String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, id)));
@@ -71,7 +70,7 @@ public class RestauranteService {
     @Transactional
     public void desassociarFormaPagamento(Long restauranteId, Long formaDePagamentoId) {
         Restaurante restaurante = validaRestaurante(restauranteId);
-        FormaPagamento formaPagamento = formaDePagamentoService.validaFormaPagamento(formaDePagamentoId);
+        FormaPagamento formaPagamento = formaPagamentoService.validaFormaPagamento(formaDePagamentoId);
 
         restaurante.removerFormaPagamento(formaPagamento);
     }
@@ -79,7 +78,7 @@ public class RestauranteService {
     @Transactional
     public void associarFormaPagamento(Long restauranteId, Long formaDePagamentoId) {
         Restaurante restaurante = validaRestaurante(restauranteId);
-        FormaPagamento formaPagamento = formaDePagamentoService.validaFormaPagamento(formaDePagamentoId);
+        FormaPagamento formaPagamento = formaPagamentoService.validaFormaPagamento(formaDePagamentoId);
 
         restaurante.adicionarFormaPagamento(formaPagamento);
     }

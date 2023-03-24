@@ -19,43 +19,43 @@ import java.util.List;
 public class ProdutosController {
 
     @Autowired
-    public RestauranteService restauranteService;
+    private RestauranteService restauranteService;
 
     @Autowired
-    public ProdutoService produtoService;
+    private ProdutoService produtoService;
 
     @Autowired
-    public ProdutoDTOAssembler produtoDTOAssembler;
+    private ProdutoDTOAssembler produtoDTOAssembler;
 
     @Autowired
-    public ProdutoDTODisassembler produtoDTODisassembler;
+    private ProdutoDTODisassembler produtoDTODisassembler;
 
     @GetMapping("/{produtoId}")
     public ProdutoDTO buscaProduto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         var produto = produtoService.buscaProdutoRestaurante(restauranteId, produtoId);
-        return produtoDTOAssembler.produtoModeloToModel(produto);
+        return produtoDTOAssembler.toModel(produto);
     }
 
     @GetMapping
     public List<ProdutoDTO> listaPodutos(@PathVariable Long restauranteId) {
         Restaurante restaurante = restauranteService.validaRestaurante(restauranteId);
-        return produtoDTOAssembler.produtoModeloList(restaurante.getProduto());
+        return produtoDTOAssembler.toCollectionDTO(restaurante.getProduto());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProdutoDTO adicionaProduto(@PathVariable Long restauranteId, @RequestBody ProdutoInput produtoInput) {
         Restaurante restaurante = restauranteService.validaRestaurante(restauranteId);
-        Produto produto = produtoDTODisassembler.toDTOObject(produtoInput);
+        Produto produto = produtoDTODisassembler.toDomainObject(produtoInput);
         produto.setRestaurante(restaurante);
         produto = produtoService.adicionar(produto);
-        return produtoDTOAssembler.produtoModeloToModel(produto);
+        return produtoDTOAssembler.toModel(produto);
     }
 
     @PutMapping("/{produtoId}")
     public ProdutoDTO aletrarProduto (@PathVariable Long restauranteId, @PathVariable Long produtoId, @RequestBody ProdutoInput produtoInput) {
         Produto produto = produtoService.validarProduto(restauranteId, produtoId);
-        produtoDTODisassembler.copyToDTOObject(produtoInput, produto);
-        return produtoDTOAssembler.produtoModeloToModel(produtoService.adicionar(produto));
+        produtoDTODisassembler.copyToDomainObject(produtoInput, produto);
+        return produtoDTOAssembler.toModel(produtoService.adicionar(produto));
     }
 }

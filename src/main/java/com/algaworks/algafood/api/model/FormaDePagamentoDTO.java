@@ -5,9 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SenhaUsuarioDto {
-
-    private String senhaAtual;
-    private String novaSenha;
-
+public class FormaDePagamentoDTO {
+    private Long id;
+    private String descricao;
 }

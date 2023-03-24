@@ -1,10 +1,10 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.api.assembler.FormaPagamentoDtoAssembler;
-import com.algaworks.algafood.api.disassembler.FormaPagamentoDtoDisassembler;
-import com.algaworks.algafood.api.model.FormaDePagamentoDto;
+import com.algaworks.algafood.api.assembler.FormaPagamentoDTOAssembler;
+import com.algaworks.algafood.api.disassembler.FormaPagamentoDTODisassembler;
+import com.algaworks.algafood.api.model.FormaDePagamentoDTO;
 import com.algaworks.algafood.domain.model.FormaPagamento;
-import com.algaworks.algafood.domain.service.FormaDePagamentoService;
+import com.algaworks.algafood.domain.service.FormaPagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,41 +16,41 @@ import java.util.List;
 @RequestMapping("/formas-pagamento")
 public class FormarPagamentoController {
     @Autowired
-    FormaDePagamentoService formaDePagamentoService;
+    private FormaPagamentoService formaPagamentoService;
 
     @Autowired
-    FormaPagamentoDtoAssembler formaPagamentoDtoAssembler;
+    private FormaPagamentoDTOAssembler formaPagamentoDTOAssembler;
 
     @Autowired
-    FormaPagamentoDtoDisassembler formaDePagamentoDtoDisassembler;
+    private FormaPagamentoDTODisassembler formaPagamentoDTODisassembler;
 
     @GetMapping
-    public List<FormaDePagamentoDto> listar() {
-        return formaPagamentoDtoAssembler.toCollectionDto(formaDePagamentoService.listar());
+    public List<FormaDePagamentoDTO> listar() {
+        return formaPagamentoDTOAssembler.toCollectionDTO(formaPagamentoService.listar());
     }
 
     @GetMapping("/{id}")
-    public FormaDePagamentoDto buscar(@PathVariable @Valid Long id) {
-        FormaPagamento formaPagamento = formaDePagamentoService.validaFormaPagamento(id);
-        return formaDePagamentoDtoDisassembler.toDtoObject(formaPagamento);
+    public FormaDePagamentoDTO buscar(@PathVariable @Valid Long id) {
+        FormaPagamento formaPagamento = formaPagamentoService.validaFormaPagamento(id);
+        return formaPagamentoDTODisassembler.toDomainObject(formaPagamento);
     }
 
     @PostMapping
-    public FormaDePagamentoDto salvar(@RequestBody @Valid FormaDePagamentoDto formaDePagamentoDto) {
-        FormaPagamento formaPagamento = formaPagamentoDtoAssembler.toModel(formaDePagamentoDto);
-        return formaDePagamentoDtoDisassembler.toDtoObject(formaDePagamentoService.salvar(formaPagamento));
+    public FormaDePagamentoDTO salvar(@RequestBody @Valid FormaDePagamentoDTO formaDePagamentoDto) {
+        FormaPagamento formaPagamento = formaPagamentoDTOAssembler.toModel(formaDePagamentoDto);
+        return formaPagamentoDTODisassembler.toDomainObject(formaPagamentoService.salvar(formaPagamento));
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public FormaDePagamentoDto atualizar(@PathVariable @Valid Long id, @RequestBody @Valid FormaDePagamentoDto formaDePagamentoDto) {
-        FormaPagamento formaPagamento = formaPagamentoDtoAssembler.toModel(formaDePagamentoDto);
+    public FormaDePagamentoDTO atualizar(@PathVariable @Valid Long id, @RequestBody @Valid FormaDePagamentoDTO formaDePagamentoDto) {
+        FormaPagamento formaPagamento = formaPagamentoDTOAssembler.toModel(formaDePagamentoDto);
         formaPagamento.setId(id);
-        return formaDePagamentoDtoDisassembler.toDtoObject(formaDePagamentoService.salvar(formaPagamento));
+        return formaPagamentoDTODisassembler.toDomainObject(formaPagamentoService.salvar(formaPagamento));
     }
 
     @DeleteMapping("/{id}")
     public void remover(@PathVariable @Valid Long id) {
-        formaDePagamentoService.deletar(id);
+        formaPagamentoService.deletar(id);
     }
 }

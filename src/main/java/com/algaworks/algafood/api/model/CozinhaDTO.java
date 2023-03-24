@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CozinhaDto {
+public class CozinhaDTO {
     private Long id;
     private String nome;
 

@@ -24,7 +24,7 @@ public class GrupoPermissaoController {
     public List<PermissaoDTO> listar(@PathVariable Long grupoId) {
         Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
 
-        return permissaoModelAssembler.toListModel(grupo.getPermissoes());
+        return permissaoModelAssembler.toCollectionDTO(grupo.getPermissoes());
     }
 
     @DeleteMapping("/{permissaoId}")
