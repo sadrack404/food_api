@@ -33,11 +33,11 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQuerys {
 
         var predicados = new ArrayList<Predicate>();
 
-        if (StringUtils.hasText(nome)){
+        if (StringUtils.hasText(nome)) {
             //Predicados da pesquisa
             predicados.add(builder.like(root.get("nome"), "%" + nome + "%"));
         }
-        if (taxaFreteInicial != null){
+        if (taxaFreteInicial != null) {
             predicados.add(builder.greaterThanOrEqualTo(root.get("taxaFrete"), taxaFreteInicial));
         }
         if (taxaFreteFinal != null) {
